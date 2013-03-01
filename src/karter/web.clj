@@ -8,29 +8,25 @@
   (:require (compojure [handler :as handler]
                        [route :as route])
             [tentacles.orgs :as orgs]
-            [tentacles.pulls :as pulls]))
+            [tentacles.pulls :as pulls]
+            [karter.html :as html]))
 
-(def auth {:auth (System/getenv "GITHUB_AUTH")})
+(defn env [k] (System/getenv k))
 
-(defsnippet repo-summary "index.html" [:.repos :li]
-  [repo]
-  [:a] (do-> (content (:name repo))
-             (set-attr "href" (format "/repo/%s" (:name repo)))))
+(def auth {:auth (env "KARTER_AUTH")})
+(def user (env "KARTER_USER"))
 
-(deftemplate index-tpl "index.html" [repos]
-  [:.repos] (content (map repo-summary repos)))
+(defn show-org [req]
+  (html/layout (str "Repositories for " user)
+               (html/organisation (orgs/repos user auth))))
 
-(defn index-page []
-  (let [repos (orgs/repos "boxuk" auth)]
-    (index-tpl repos)))
-
-(defn project-page [project]
-  (let [issues (pulls/pulls "boxuk" project "open")]
-    (pr-str issues)))
+(defn show-repo [repo req]
+  (html/layout (str "Repository - " repo)
+               (html/repository (pulls/pulls user repo auth))))
 
 (defroutes app-routes
-  (GET "/" [] (index-page))
-  (GET "/repo/:project" [project] (project-page project))
+  (GET "/" [] show-org)
+  (GET "/repo/:repo" [repo] (partial show-repo repo))
   (route/resources "/assets")
   (route/not-found "404..."))
 
