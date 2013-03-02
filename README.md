@@ -10,10 +10,14 @@ To start Karter just set some env vars and run it through Leiningen.
 ```
 export KARTER_AUTH="user:password"
 export KARTER_USER="organisation_or_user_name"
+export KARTER_PORT="3456"
 
 lein run
 ```
 
 The auth var is optional, and the user should be the name of the
-user or organisation you want to view.
+user or organisation you want to view.  You'll then be able to
+browse the site at:
+
+http://localhost:3456
 
