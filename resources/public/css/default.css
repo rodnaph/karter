@@ -1,2 +1,57 @@
 
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+
+.clearfix {
+	display: inline-block;
+}
+
+html[xmlns] .clearfix {
+	display: block;
+}
+
+* html .clearfix {
+	height: 1%;
+}
+
+/************ authors ***************/
+
+.author img {
+    width: 30px;
+    border-radius: 4px;
+}
+
+/************ pull requests ***************/
+
+.pulls {
+    list-style-type: none;
+    margin: 0;
+}
+
+.pulls .pull {
+    margin: 10px 0 10px 0;
+    clear: both;
+    width: 100%;
+}
+
+.pulls .pull h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+    line-height: 1.5em;
+}
+
+.pulls .pull .author {
+    float: right;
+}
+
+.pulls .pull p {
+    margin: 10px 0 0 0;
+    color: #777;
+}
 

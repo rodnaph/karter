@@ -2,11 +2,15 @@
 (ns karter.html
   (:use net.cgrand.enlive-html))
 
-(defn author [pull]
-  (let [login (get-in pull [:user :login])]
-    (do-> (content login)
-          (set-attr :href
-                    (format "https://github.com/%s" login)))))
+(defmacro deftransform [defname args & body]
+  `(defn ~defname [~@args]
+     #(at % ~@body)))
+
+(deftransform author [{:keys [user]}]
+  [:img] (set-attr :src (:avatar_url user))
+  [:a] (do-> (set-attr :href (format "https://github.com/%s" (:login user)))
+             (set-attr :alt (:login user))
+             (set-attr :title (:login user))))
 
 ;; Public
 ;; ------
@@ -26,6 +30,8 @@
 (defsnippet repository "pulls.html" [:.span8]
   [pulls]
   [:li] (clone-for [pull pulls]
-          [:a] (do-> (content (:title pull)))
-          [:.author] (author pull)))
+          [:li] (add-class "foo")
+          [:.title] (do-> (content (:title pull)))
+          [:.author] (author pull)
+          [:.description] (content (:body pull))))
 
