@@ -21,3 +21,9 @@ browse the site at:
 
 http://localhost:3456
 
+![](http://github.com/rodnaph/karter/raw/master/docs/pulls.png)
+
+## Inventor
+
+The idea for this project was from [@jenkoian](https://github.com/jenkoian).
+
