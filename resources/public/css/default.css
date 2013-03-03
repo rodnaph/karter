@@ -68,7 +68,7 @@ html[xmlns] .clearfix {
 }
 
 .pulls .pull .desc {
-    width: 555px;
+    width: 540px;
 }
 
 .pulls .pull .age {
@@ -77,12 +77,18 @@ html[xmlns] .clearfix {
     margin: 0 15px 15px 0;
     border-radius: 10px;
     opacity: 0.8;
+    line-height: 20px;
+    text-align: center;
+    color: #fff;
+    font-size: 1.2em;
+    margin-top: 5px;
+    padding: 5px;
 }
 
 /************ age colors ***************/
 
-.age-seconds .age { background-color: #dfd; }
-.age-minutes .age { background-color: #993; }
-.age-hours .age { background-color: #930; }
-.age-days .age { background-color: #900; }
+.age-seconds { background-color: #dfd; }
+.age-minutes { background-color: #993; }
+.age-hours { background-color: #930; }
+.age-days { background-color: #900; }
 
