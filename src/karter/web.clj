@@ -26,7 +26,7 @@
 (defn aged-prs [repo]
   (->> (prs/pulls user repo auth)
        (map with-age)
-       (sort-by :age)))
+       (sort-by :age >)))
 
 (defn show-org [req]
   (html/layout (str "Repositories for " user)

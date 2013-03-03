@@ -27,6 +27,13 @@ html[xmlns] .clearfix {
     border-radius: 4px;
 }
 
+/************ repos ***************/
+
+.repos {
+    list-style-type: none;
+    margin: 0;
+}
+
 /************ pull requests ***************/
 
 .pulls {
@@ -54,4 +61,28 @@ html[xmlns] .clearfix {
     margin: 10px 0 0 0;
     color: #777;
 }
+
+.pulls .pull .age,
+.pulls .pull .desc {
+    float: left;
+}
+
+.pulls .pull .desc {
+    width: 555px;
+}
+
+.pulls .pull .age {
+    width: 50px;
+    height: 50px;
+    margin: 0 15px 15px 0;
+    border-radius: 10px;
+    opacity: 0.8;
+}
+
+/************ age colors ***************/
+
+.age-seconds .age { background-color: #dfd; }
+.age-minutes .age { background-color: #993; }
+.age-hours .age { background-color: #930; }
+.age-days .age { background-color: #900; }
 
