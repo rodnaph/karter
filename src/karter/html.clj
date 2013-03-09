@@ -48,7 +48,7 @@
                     (do-> (add-class (str "age-" cls))
                           (content (format "%s %s" age cls))))
           [:.title] (do-> (content (:title pull))
-                          (set-attr :href "asd"))
+                          (set-attr :href (:html_url pull)))
           [:.author] (author (:user pull))
           [:.body] (content (:body pull))))
 
