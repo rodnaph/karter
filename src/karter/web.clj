@@ -9,14 +9,23 @@
         [clj-time.format :only [parse formatters]])
   (:require (compojure [handler :as handler]
                        [route :as route])
-            [tentacles.orgs :as orgs]
+            [tentacles.repos :as repos]
             [tentacles.pulls :as prs]
             [karter.html :as html]))
 
 (def config (confo :karter))
 (def auth {:auth (:auth config)})
 (def user (:user config))
+(def perPage 30)
 
+(defn all-repos
+  ([user] (all-repos user 1))
+  ([user page]
+   (let [opts (merge auth {:page page :perPage perPage})
+         repos (repos/org-repos user opts)]
+     (if (= perPage (count repos))
+         (concat repos (all-repos user (inc page)))
+         repos))))
 
 (defn with-age [pull]
   (let [fmt (formatters :date-time-no-ms)
@@ -31,7 +40,7 @@
 
 (defn show-org [req]
   (html/layout (str "Repositories for " user)
-               (html/organisation (orgs/repos user auth))))
+               (html/organisation (all-repos user))))
 
 (defn show-repo [repo req]
   (html/layout (str "Repository - " repo)
