@@ -3,6 +3,7 @@
   (:use compojure.core
         ring.middleware.reload
         ring.middleware.stacktrace
+        confo.core
         [clj-time.core :only [interval in-minutes]]
         [clj-time.local :only [local-now]]
         [clj-time.format :only [parse formatters]])
@@ -12,10 +13,10 @@
             [tentacles.pulls :as prs]
             [karter.html :as html]))
 
-(defn env [k] (System/getenv k))
+(def config (confo :karter))
+(def auth {:auth (:auth config)})
+(def user (:user config))
 
-(def auth {:auth (env "KARTER_AUTH")})
-(def user (env "KARTER_USER"))
 
 (defn with-age [pull]
   (let [fmt (formatters :date-time-no-ms)
