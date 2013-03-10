@@ -1,14 +1,14 @@
 
 (ns karter.core
-  (:use confo.core)
-  (:require [karter.web :as web]
-            [ring.adapter.jetty :as jetty]))
+  (:use confo.core
+        [org.httpkit.server :only [run-server]])
+  (:require [karter.web :as web]))
 
 (def config (confo :karter
                    :port 3456))
 
 (defn start []
-  (jetty/run-jetty web/app config))
+  (run-server web/app config))
 
 (defn -main []
   (start))

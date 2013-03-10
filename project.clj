@@ -3,7 +3,7 @@
   :description "Pull Request Viewer"
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [compojure "1.1.5"]
-                 [ring/ring-jetty-adapter "1.1.8"]
+                 [http-kit "2.0.0-RC4"]
                  [ring/ring-devel "1.1.8"]
                  [enlive "1.0.1"]
                  [tentacles "0.2.4"]
