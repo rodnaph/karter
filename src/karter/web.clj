@@ -25,14 +25,19 @@
          repos))))
 
 (defn aged-by
-  [lst k comparer]
+  [k comparer lst]
   (sort-by (partial age-of k) comparer lst))
 
+(defn has-issues [repo]
+  (> (:open_issues_count repo) 0))
+
 (defn aged-repos []
-  (aged-by (repos-for user) :updated_at <))
+  (->> (repos-for user)
+       (filter has-issues)
+       (aged-by :updated_at <)))
 
 (defn aged-prs [repo]
-  (aged-by (prs/pulls user repo auth) :created_at >))
+  (aged-by :created_at > (prs/pulls user repo auth)))
 
 (defn show-org [req]
   (html/layout (str "Repositories for " user)
