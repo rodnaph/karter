@@ -4,9 +4,7 @@
         ring.middleware.reload
         ring.middleware.stacktrace
         confo.core
-        [clj-time.core :only [interval in-minutes]]
-        [clj-time.local :only [local-now]]
-        [clj-time.format :only [parse formatters]])
+        [karter.dates :only [age-of]])
   (:require (compojure [handler :as handler]
                        [route :as route])
             [tentacles.repos :as repos]
@@ -14,33 +12,31 @@
             [karter.html :as html]))
 
 (def config (confo :karter))
-(def auth {:auth (:auth config)})
+(def auth (select-keys config [:auth]))
 (def user (:user config))
-(def perPage 30)
 
-(defn all-repos
+(defn repos-for
   ([user] (all-repos user 1))
   ([user page]
-   (let [opts (merge auth {:page page :perPage perPage})
+   (let [opts (merge auth {:page page})
          repos (repos/org-repos user opts)]
-     (if (= perPage (count repos))
-         (concat repos (all-repos user (inc page)))
+     (if (= 30 (count repos))
+         (concat repos (repos-for user (inc page)))
          repos))))
 
-(defn with-age [pull]
-  (let [fmt (formatters :date-time-no-ms)
-        age (interval (parse fmt (:created_at pull))
-                      (local-now))]
-    (assoc pull :age (in-minutes age))))
+(defn aged-by
+  [lst k comparer]
+  (sort-by (partial age-of k) comparer lst))
+
+(defn aged-repos []
+  (aged-by (repos-for user) :updated_at <))
 
 (defn aged-prs [repo]
-  (->> (prs/pulls user repo auth)
-       (map with-age)
-       (sort-by :age >)))
+  (aged-by (prs/pulls user repo auth) :created_at >))
 
 (defn show-org [req]
   (html/layout (str "Repositories for " user)
-               (html/organisation (all-repos user))))
+               (html/organisation (aged-repos))))
 
 (defn show-repo [repo req]
   (html/layout (str "Repository - " repo)

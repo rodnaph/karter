@@ -1,6 +1,7 @@
 
 (ns karter.html
-  (:use net.cgrand.enlive-html))
+  (:use net.cgrand.enlive-html
+        [karter.dates :only [age-of]]))
 
 (defmacro deftransform [defname args & body]
   `(defn ~defname [~@args]
@@ -20,7 +21,7 @@
 (defn age-class [pull]
   (let [one-hour 60
         one-day (* one-hour 24)
-        age (:age pull)]
+        age (age-of :created_at pull)]
     (condp >= age
       one-hour [age "minutes"]
       one-day [(div age one-hour)  "hours"]
