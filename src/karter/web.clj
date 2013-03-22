@@ -16,7 +16,7 @@
 (def user (:user config))
 
 (defn repos-for
-  ([user] (all-repos user 1))
+  ([user] (repos-for user 1))
   ([user page]
    (let [opts (merge auth {:page page})
          repos (repos/org-repos user opts)]
